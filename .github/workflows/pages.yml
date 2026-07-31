@@ -1,0 +1,58 @@
+name: Deploy SINERGYCHAIN to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract verified source bundle
+        run: |
+          mkdir -p _source
+          tar -xzf source/SINERGYCHAIN_GROWTH_OS_V7_SOURCE.tar.gz -C _source
+          test -f _source/public/index.html
+          test -f _source/package.json
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validate application
+        working-directory: _source
+        run: npm run check
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload safe static portal only
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _source/public
+
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
