@@ -1,1 +1,0 @@
-The source bundle is intentionally stored as one atomic, reproducible archive so the private repository can preserve the complete tested V7 tree without exposing runtime data. GitHub Actions extracts it for CI and Pages deployment.
