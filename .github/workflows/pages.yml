@@ -3,6 +3,8 @@ name: Verify and deploy SINERGYCHAIN V7
 on:
   push:
     branches: [release-v7, main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
