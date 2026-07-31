@@ -1,0 +1,77 @@
+name: Verify and deploy SINERGYCHAIN V7
+
+on:
+  push:
+    branches: [release-v7, main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+env:
+  SOURCE_ARCHIVE: source/SINERGYCHAIN_GROWTH_OS_V7_SOURCE.tar.gz
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Reconstruct project
+        run: |
+          set -euo pipefail
+          mkdir -p _project
+          gzip -t "$SOURCE_ARCHIVE"
+          tar -xzf "$SOURCE_ARCHIVE" -C _project
+          test -f _project/package.json
+          test -f _project/public/index.html
+          echo "Archive bytes: $(stat -c%s "$SOURCE_ARCHIVE")"
+          sha256sum "$SOURCE_ARCHIVE"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run project validation
+        working-directory: _project
+        run: npm run check
+
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _project/public
+
+      - name: Publish expanded source branch
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cd _project
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b source-v7
+          git add -A
+          git commit -m "Expand SINERGYCHAIN Growth OS V7 source"
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push --force origin source-v7
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: verify
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
