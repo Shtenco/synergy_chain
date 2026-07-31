@@ -1,0 +1,129 @@
+name: Verify and deploy SINERGYCHAIN V7
+
+on:
+  push:
+    branches: [release-v7, main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+env:
+  SOURCE_ARCHIVE: source/SINERGYCHAIN_GROWTH_OS_V7_SOURCE.tar.gz
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Diagnose, reconstruct and test
+        id: diagnostics
+        shell: bash
+        run: |
+          set +e
+          mkdir -p _diagnostics _project
+          REPORT=_diagnostics/diagnostic.txt
+          STATUS=0
+          {
+            echo "SINERGYCHAIN V7 CI diagnostics"
+            echo "ref=$GITHUB_REF"
+            echo "sha=$GITHUB_SHA"
+            echo "archive=$SOURCE_ARCHIVE"
+            ls -lah source || true
+            stat "$SOURCE_ARCHIVE" || STATUS=1
+            sha256sum "$SOURCE_ARCHIVE" || STATUS=1
+            echo "--- gzip test ---"
+            gzip -tv "$SOURCE_ARCHIVE"
+            GZIP_STATUS=$?
+            echo "gzip_status=$GZIP_STATUS"
+            test $GZIP_STATUS -eq 0 || STATUS=1
+            echo "--- tar list (first 80) ---"
+            tar -tzf "$SOURCE_ARCHIVE" | head -80
+            TAR_LIST_STATUS=${PIPESTATUS[0]}
+            echo "tar_list_status=$TAR_LIST_STATUS"
+            test $TAR_LIST_STATUS -eq 0 || STATUS=1
+            echo "--- extraction ---"
+            tar -xzf "$SOURCE_ARCHIVE" -C _project
+            EXTRACT_STATUS=$?
+            echo "extract_status=$EXTRACT_STATUS"
+            test $EXTRACT_STATUS -eq 0 || STATUS=1
+            echo "--- extracted root ---"
+            find _project -maxdepth 2 -type f | sort | head -120
+            echo "--- required files ---"
+            test -f _project/package.json
+            P1=$?
+            test -f _project/public/index.html
+            P2=$?
+            echo "package_json=$P1 public_index=$P2"
+            test $P1 -eq 0 || STATUS=1
+            test $P2 -eq 0 || STATUS=1
+            if [ $P1 -eq 0 ]; then
+              echo "--- npm run check ---"
+              (cd _project && npm run check)
+              CHECK_STATUS=$?
+              echo "check_status=$CHECK_STATUS"
+              test $CHECK_STATUS -eq 0 || STATUS=1
+            fi
+            echo "final_status=$STATUS"
+          } 2>&1 | tee "$REPORT"
+          echo "$STATUS" > _diagnostics/status
+          exit 0
+
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v7-ci-diagnostics
+          path: _diagnostics
+          if-no-files-found: error
+
+      - name: Enforce verification result
+        run: |
+          test "$(cat _diagnostics/status)" = "0"
+
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _project/public
+
+      - name: Publish expanded source branch
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cd _project
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b source-v7
+          git add -A
+          git commit -m "Expand SINERGYCHAIN Growth OS V7 source"
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push --force origin source-v7
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: verify
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
