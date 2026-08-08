@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sinergy.local/schemas/metapay-execution-plan.schema.json",
+  "title": "MetaPay Execution Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "source_asset",
+    "destination_asset",
+    "amount_in",
+    "amount_out",
+    "source_equivalent_out",
+    "source_equivalent_total_cost",
+    "economic_score",
+    "providers",
+    "legs"
+  ],
+  "properties": {
+    "schema_version": {"const": "metapay-execution-plan/v1"},
+    "source_asset": {"type": "string", "minLength": 1},
+    "destination_asset": {"type": "string", "minLength": 1},
+    "amount_in": {"type": "number", "exclusiveMinimum": 0},
+    "amount_out": {"type": "number", "minimum": 0},
+    "source_equivalent_out": {"type": "number", "minimum": 0},
+    "source_equivalent_total_cost": {"type": "number", "minimum": 0},
+    "economic_score": {"type": "number"},
+    "providers": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "legs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "provider",
+          "family",
+          "source_asset",
+          "destination_asset",
+          "amount_in",
+          "amount_out",
+          "executable",
+          "compliant"
+        ],
+        "properties": {
+          "provider": {"type": "string", "minLength": 1},
+          "family": {"type": "string", "minLength": 1},
+          "source_asset": {"type": "string", "minLength": 1},
+          "destination_asset": {"type": "string", "minLength": 1},
+          "amount_in": {"type": "number", "exclusiveMinimum": 0},
+          "amount_out": {"type": "number", "minimum": 0},
+          "executable": {"const": true},
+          "compliant": {"const": true}
+        }
+      }
+    }
+  }
+}
