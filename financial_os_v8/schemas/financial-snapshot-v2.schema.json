@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sinergy.local/schemas/financial-snapshot-v2.schema.json",
+  "title": "SINERGY Financial Snapshot V2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "ledger_sequence", "ledger_digest_sha256",
+    "hard_nav", "liquid_nav", "economic_nav", "hard_assets",
+    "external_liabilities", "immediate_hard_liabilities",
+    "hard_coverage_ratio", "distributable_profit",
+    "realized_external_revenue", "net_new_capital",
+    "synt_coverage", "synr_nav", "syna_nav", "current_week",
+    "unlock_curve_1_100", "unlock_1w", "unlock_4w", "unlock_8w",
+    "unlock_26w", "unlock_100w", "lcr_1w", "lcr_4w", "lcr_8w",
+    "policy_mode", "policy_invariant_failures"
+  ],
+  "properties": {
+    "schema_version": {"const": "sinergy-financial-snapshot/v2"},
+    "ledger_sequence": {"type": "integer", "minimum": 0},
+    "ledger_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "hard_nav": {"type": "number"},
+    "liquid_nav": {"type": "number"},
+    "economic_nav": {"type": "number"},
+    "hard_assets": {"type": "number", "minimum": 0},
+    "external_liabilities": {"type": "number", "minimum": 0},
+    "immediate_hard_liabilities": {"type": "number", "minimum": 0},
+    "hard_coverage_ratio": {"type": ["number", "null"], "minimum": 0},
+    "distributable_profit": {"type": "number", "minimum": 0},
+    "realized_external_revenue": {"type": "number", "minimum": 0},
+    "net_new_capital": {"type": "number"},
+    "synt_coverage": {"type": ["number", "null"], "minimum": 0},
+    "synr_nav": {"type": "number", "minimum": 0},
+    "syna_nav": {"type": "number", "minimum": 0},
+    "current_week": {"type": "integer", "minimum": 0},
+    "unlock_curve_1_100": {
+      "type": "array", "minItems": 100, "maxItems": 100,
+      "items": {"type": "number", "minimum": 0}
+    },
+    "unlock_1w": {"type": "number", "minimum": 0},
+    "unlock_4w": {"type": "number", "minimum": 0},
+    "unlock_8w": {"type": "number", "minimum": 0},
+    "unlock_26w": {"type": "number", "minimum": 0},
+    "unlock_100w": {"type": "number", "minimum": 0},
+    "lcr_1w": {"type": ["number", "null"], "minimum": 0},
+    "lcr_4w": {"type": ["number", "null"], "minimum": 0},
+    "lcr_8w": {"type": ["number", "null"], "minimum": 0},
+    "policy_mode": {"enum": ["GROWTH", "NORMAL", "DEFENSE", "EMERGENCY"]},
+    "policy_invariant_failures": {
+      "type": "array", "items": {"type": "string"}, "uniqueItems": true
+    }
+  }
+}
