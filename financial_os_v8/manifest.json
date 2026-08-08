@@ -1,0 +1,47 @@
+{
+  "version": "8.0.0-dev",
+  "status": "side-by-side-reference",
+  "legacy_bundle_untouched": true,
+  "monetary_roles": {
+    "SYNA": "capital_equity_risk_upside",
+    "SYNR": "reserve_savings_insurance_capital",
+    "SYNT": "stable_transaction_money_unit_of_account",
+    "SYNR-X": "optional_internal_cross-system_clearing_unit"
+  },
+  "truth_metrics": [
+    "hard_nav",
+    "liquid_nav",
+    "economic_nav",
+    "external_liabilities",
+    "liquidity_coverage_ratio",
+    "insurance_coverage_ratio",
+    "nonperforming_loan_ratio",
+    "distributable_profit"
+  ],
+  "policy_modes": ["GROWTH", "NORMAL", "DEFENSE", "EMERGENCY"],
+  "hard_invariants": [
+    "unbacked_mint == 0",
+    "flash_debt_at_commit == 0",
+    "loan_maturity < funding_maturity",
+    "buyback <= realized_distributable_profit_budget",
+    "self_token_market_cap_not_in_hard_nav"
+  ],
+  "services": {
+    "monetary_core": "ai_financial_system/feat/financial-os-v4-20260809",
+    "metapay": "synergy_pay_system/feat/metapay-v2-20260809",
+    "portal": "synergychain/feat/financial-os-v8-20260809"
+  },
+  "portal_panels": [
+    "money_layers",
+    "savings_duration_curve",
+    "p2p_credit",
+    "productive_qe",
+    "insurance_waterfall",
+    "midas_risk_sleeve",
+    "hard_nav",
+    "metapay_routes",
+    "bridge_health",
+    "ai_cb_policy",
+    "real_economy_cashflow"
+  ]
+}
