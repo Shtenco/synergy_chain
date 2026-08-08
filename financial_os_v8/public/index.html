@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SINERGY Financial OS V8 — Control Plane Prototype</title>
+<style>
+:root{--bg:#070907;--panel:#101410;--line:#263126;--g:#00e664;--gold:#f2c15b;--text:#f5f7f5;--muted:#9da79f;--danger:#ff735c}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 15% 10%,rgba(0,230,100,.09),transparent 32%),var(--bg);color:var(--text);font-family:Arial,sans-serif}
+.wrap{max-width:1280px;margin:auto;padding:34px 22px 80px}.eyebrow{color:var(--g);font:700 12px monospace;letter-spacing:.16em}.hero{padding:56px 0 36px;border-bottom:1px solid var(--line)}
+h1{font-size:clamp(42px,7vw,92px);line-height:.92;margin:14px 0 24px;max-width:1000px}.lead{max-width:850px;color:#c8d0c9;font-size:19px;line-height:1.7}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:26px}
+.card{background:linear-gradient(180deg,rgba(16,20,16,.96),rgba(8,11,8,.96));border:1px solid var(--line);padding:22px;border-radius:16px}.span4{grid-column:span 4}.span6{grid-column:span 6}.span12{grid-column:span 12}
+.k{color:var(--muted);font:12px monospace;text-transform:uppercase;letter-spacing:.12em}.v{font-size:29px;font-weight:800;margin-top:8px}.green{color:var(--g)}.gold{color:var(--gold)}
+.token{display:flex;justify-content:space-between;gap:15px;padding:15px 0;border-bottom:1px solid var(--line)}.token:last-child{border:0}.token strong{font-size:19px}.token p{margin:3px 0;color:var(--muted);font-size:14px}
+.mode{display:inline-flex;padding:8px 12px;border:1px solid var(--g);color:var(--g);font:700 12px monospace;border-radius:999px}.flow{font:14px/1.8 monospace;color:#dbe2dc;white-space:pre-wrap}.warning{border-color:#5a3c28}.warning .v{color:var(--gold)}
+footer{margin-top:50px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}@media(max-width:820px){.span4,.span6{grid-column:span 12}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<section class="hero">
+<div class="eyebrow">SINERGYCHAIN / FINANCIAL OS V8 / SIDE-BY-SIDE PROTOTYPE</div>
+<h1>ДЕНЬГИ — ЭТО НЕ ОДИН ТОКЕН.</h1>
+<p class="lead">Новый контрольный слой разделяет капитал, резерв и расчётные деньги, связывает накопления с продуктивным кредитом, а прибыль признаёт только через внешний консолидированный баланс. Эта страница не заменяет старый Growth OS V7 и не подключена к его деплою.</p>
+</section>
+
+<section class="grid">
+<div class="card span4"><div class="k">Капитал</div><div class="v green">SYNA</div><p>Equity · governance · risk · upside.</p></div>
+<div class="card span4"><div class="k">Резерв</div><div class="v gold">SYNR</div><p>Savings · basket NAV · insurance capital.</p></div>
+<div class="card span4"><div class="k">Деньги</div><div class="v">SYNT</div><p>Payments · unit of account · stable liabilities.</p></div>
+
+<div class="card span6">
+<div class="k">Публичная правда баланса</div>
+<div class="token"><div><strong>HardNAV</strong><p>Только внешне погашаемые активы минус обязательства.</p></div><span class="green">PRIMARY</span></div>
+<div class="token"><div><strong>LiquidNAV</strong><p>Ликвидные активы после haircut.</p></div><span>SECONDARY</span></div>
+<div class="token"><div><strong>EconomicNAV</strong><p>Performing loans и бизнес-активы после haircut.</p></div><span>ANALYTIC</span></div>
+</div>
+
+<div class="card span6">
+<div class="k">AI Central Bank</div><div class="v">RULES → RL RESIDUAL → SHIELD</div>
+<p>RL не может нарушить hard invariants. При сбое модель отключается, а deterministic policy продолжает работу.</p>
+<div class="mode">NORMAL</div>
+</div>
+
+<div class="card span6"><div class="k">Savings → Credit</div><div class="flow">Доход
+  ↓ 2–5%
+Vesting 1–100 недель
+  ↓
+Funding duration market
+  ↓
+P2P / productive credit
+  ↓
+Principal → QT
+Interest → realized profit</div></div>
+<div class="card span6"><div class="k">MetaPay</div><div class="flow">Bank / ISO 20022
+CBDC API façade
+Crypto / Lightning
+Interledger / Rafiki
+DLT bridge / Cacti
+        ↓
+Quote + compliance + netting
+        ↓
+Final settlement</div></div>
+
+<div class="card span12 warning"><div class="k">Не считается прибылью</div><div class="v">MINT · SELF-TOKEN MCAP · VIRTUAL TVL · INTERNAL PRICE PUMP</div><p>Distributable profit появляется только когда HardNAV вырос после вычета нового внесённого капитала.</p></div>
+</section>
+<footer>V8 prototype lives in a new branch and directory. Legacy V7 source bundle remains untouched.</footer>
+</main>
+</body>
+</html>

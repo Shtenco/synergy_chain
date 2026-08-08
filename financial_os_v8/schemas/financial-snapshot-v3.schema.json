@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sinergy.local/schemas/financial-snapshot-v3.schema.json",
+  "title": "SINERGY Financial Snapshot V3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "financial", "real_economy"],
+  "properties": {
+    "schema_version": {"const": "sinergy-financial-snapshot/v3"},
+    "financial": {
+      "$ref": "financial-snapshot-v2.schema.json"
+    },
+    "real_economy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "goods_availability_base",
+        "domestic_origin_goods",
+        "import_origin_goods",
+        "productive_base",
+        "import_dependency_ratio",
+        "new_financial_savings",
+        "term_eligible_savings",
+        "bank_productive_funding_capacity",
+        "private_bank_funding_committed",
+        "targeted_authorization_outstanding",
+        "import_fx_demand_rub_equivalent",
+        "import_settlement_rub",
+        "import_settlement_cny_rub_equivalent",
+        "import_settlement_usd_eur_rub_equivalent",
+        "import_settlement_other_rub_equivalent"
+      ],
+      "properties": {
+        "goods_availability_base": {"type": "number", "minimum": 0},
+        "domestic_origin_goods": {"type": "number", "minimum": 0},
+        "import_origin_goods": {"type": "number", "minimum": 0},
+        "productive_base": {"type": "number", "minimum": 0},
+        "import_dependency_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "new_financial_savings": {"type": "number", "minimum": 0},
+        "term_eligible_savings": {"type": "number", "minimum": 0},
+        "bank_productive_funding_capacity": {"type": "number", "minimum": 0},
+        "private_bank_funding_committed": {"type": "number", "minimum": 0},
+        "targeted_authorization_outstanding": {"type": "number", "minimum": 0},
+        "import_fx_demand_rub_equivalent": {"type": "number", "minimum": 0},
+        "import_settlement_rub": {"type": "number", "minimum": 0},
+        "import_settlement_cny_rub_equivalent": {"type": "number", "minimum": 0},
+        "import_settlement_usd_eur_rub_equivalent": {"type": "number", "minimum": 0},
+        "import_settlement_other_rub_equivalent": {"type": "number", "minimum": 0}
+      }
+    }
+  }
+}

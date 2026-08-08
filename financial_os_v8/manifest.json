@@ -1,0 +1,68 @@
+{
+  "version": "8.1.0-dev",
+  "status": "side-by-side-reference",
+  "legacy_bundle_untouched": true,
+  "current_schemas": {
+    "financial_snapshot": "financial_os_v8/schemas/financial-snapshot-v2.schema.json",
+    "financial_snapshot_legacy": "financial_os_v8/schemas/financial-snapshot.schema.json",
+    "metapay_execution_plan": "financial_os_v8/schemas/metapay-execution-plan.schema.json",
+    "metapay_rfq_auction_result": "financial_os_v8/schemas/metapay-rfq-auction-result.schema.json"
+  },
+  "monetary_roles": {
+    "SYNA": "capital_equity_risk_upside",
+    "SYNR": "reserve_savings_insurance_capital",
+    "SYNT": "stable_transaction_money_unit_of_account",
+    "SYNR-X": "optional_internal_cross-system_clearing_unit"
+  },
+  "truth_metrics": [
+    "ledger_sequence",
+    "ledger_digest_sha256",
+    "hard_nav",
+    "liquid_nav",
+    "economic_nav",
+    "external_liabilities",
+    "immediate_hard_liabilities",
+    "hard_coverage_ratio",
+    "unlock_curve_1_100",
+    "lcr_1w",
+    "lcr_4w",
+    "lcr_8w",
+    "insurance_coverage_ratio",
+    "nonperforming_loan_ratio",
+    "realized_external_revenue",
+    "net_new_capital",
+    "distributable_profit"
+  ],
+  "policy_modes": ["GROWTH", "NORMAL", "DEFENSE", "EMERGENCY"],
+  "hard_invariants": [
+    "double_entry_trial_balance == 0",
+    "unbacked_mint == 0",
+    "flash_debt_at_commit == 0",
+    "loan_maturity < funding_maturity",
+    "buyback <= realized_distributable_profit_budget",
+    "self_token_market_cap_not_in_hard_nav",
+    "oracle_claim_not_in_hard_nav_before_reconciliation",
+    "rfq_execution_requires_compliance_and_prefund_ndc_reservation"
+  ],
+  "services": {
+    "monetary_core": "ai_financial_system/feat/financial-os-v4-20260809",
+    "metapay": "synergy_pay_system/feat/metapay-v2-20260809",
+    "portal": "synergychain/feat/financial-os-v8-20260809"
+  },
+  "portal_panels": [
+    "ledger_integrity",
+    "money_layers",
+    "savings_duration_curve",
+    "unlock_1_4_8_26_100w",
+    "p2p_credit",
+    "productive_qe_qt",
+    "insurance_waterfall",
+    "midas_risk_sleeve",
+    "hard_liquid_economic_nav",
+    "metapay_rfq",
+    "metapay_routes",
+    "bridge_health",
+    "ai_cb_policy",
+    "real_economy_cashflow"
+  ]
+}

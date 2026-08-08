@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sinergy.local/schemas/metapay-rfq-auction-result.schema.json",
+  "title": "MetaPay RFQ Auction Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "winning_bid_id", "economic_score", "reservation", "execution_plan_digest_sha256"
+  ],
+  "properties": {
+    "winning_bid_id": {"type": "string", "minLength": 1},
+    "economic_score": {"type": "number"},
+    "reservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reservation_id", "provider", "asset", "amount"],
+      "properties": {
+        "reservation_id": {"type": "integer", "minimum": 1},
+        "provider": {"type": "string", "minLength": 1},
+        "asset": {"type": "string", "minLength": 1},
+        "amount": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "execution_plan_digest_sha256": {
+      "type": "string", "pattern": "^[0-9a-f]{64}$"
+    },
+    "rejected": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["bid_id", "reason"],
+        "properties": {
+          "bid_id": {"type": "string", "minLength": 1},
+          "reason": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

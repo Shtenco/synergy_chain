@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sinergy.local/schemas/financial-snapshot.schema.json",
+  "title": "SINERGY Financial Snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "sequence",
+    "hard_nav",
+    "liquid_nav",
+    "economic_nav",
+    "hard_assets",
+    "external_liabilities",
+    "distributable_profit",
+    "synt_coverage",
+    "synr_nav",
+    "syna_nav",
+    "policy_mode",
+    "policy_invariant_failures"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "sinergy-financial-snapshot/v1"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "hard_nav": {"type": "number"},
+    "liquid_nav": {"type": "number"},
+    "economic_nav": {"type": "number"},
+    "hard_assets": {"type": "number", "minimum": 0},
+    "external_liabilities": {"type": "number", "minimum": 0},
+    "distributable_profit": {"type": "number", "minimum": 0},
+    "synt_coverage": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "synr_nav": {"type": "number", "minimum": 0},
+    "syna_nav": {"type": "number", "minimum": 0},
+    "policy_mode": {
+      "enum": ["GROWTH", "NORMAL", "DEFENSE", "EMERGENCY"]
+    },
+    "policy_invariant_failures": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    }
+  }
+}
