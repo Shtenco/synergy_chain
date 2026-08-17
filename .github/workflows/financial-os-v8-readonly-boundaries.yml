@@ -3,8 +3,12 @@ name: Financial OS V8 read-only boundaries
 on:
   pull_request:
     paths:
+      - "financial_os_v8/canonical_json_v1.cjs"
+      - "financial_os_v8/conformance/**"
       - "financial_os_v8/read_only_snapshot_verifier.cjs"
       - "financial_os_v8/test_read_only_snapshot_verifier.cjs"
+      - "financial_os_v8/test_financial_snapshot_v2_conformance.cjs"
+      - "financial_os_v8/test_canonical_json_conformance.cjs"
       - "financial_os_v8/read_only_project_screening_verifier.cjs"
       - "financial_os_v8/test_read_only_project_screening_verifier.cjs"
       - "financial_os_v8/READ_ONLY_SNAPSHOT_CONSUMER_20260817.md"
@@ -32,11 +36,20 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Syntax check canonical JSON profile
+        run: node --check financial_os_v8/canonical_json_v1.cjs
+
       - name: Syntax check snapshot verifier
         run: node --check financial_os_v8/read_only_snapshot_verifier.cjs
 
       - name: Syntax check project-screening verifier
         run: node --check financial_os_v8/read_only_project_screening_verifier.cjs
+
+      - name: Run canonical JSON cross-language conformance
+        run: node financial_os_v8/test_canonical_json_conformance.cjs
+
+      - name: Run authoritative snapshot fixture conformance
+        run: node financial_os_v8/test_financial_snapshot_v2_conformance.cjs
 
       - name: Run snapshot verifier regression suite
         run: node financial_os_v8/test_read_only_snapshot_verifier.cjs
