@@ -1,0 +1,40 @@
+name: Project screening read-only verifier v2
+
+on:
+  pull_request:
+    paths:
+      - "financial_os_v8/canonical_json_v1.cjs"
+      - "financial_os_v8/read_only_project_screening_verifier_v2.cjs"
+      - "financial_os_v8/test_read_only_project_screening_verifier_v2.cjs"
+      - "financial_os_v8/READ_ONLY_PROJECT_SCREENING_CONSUMER_V2_20260817.md"
+      - ".github/workflows/project-screening-readonly-v2.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: project-screening-readonly-v2-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  strict-readonly-project-screening:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Syntax check shared canonical JSON profile
+        run: node --check financial_os_v8/canonical_json_v1.cjs
+
+      - name: Syntax check strict project screening verifier
+        run: node --check financial_os_v8/read_only_project_screening_verifier_v2.cjs
+
+      - name: Run strict non-authorizing project screening verifier tests
+        run: node financial_os_v8/test_read_only_project_screening_verifier_v2.cjs
