@@ -72,6 +72,13 @@ function signedSnapshot() {
   return { ...payload, digest: sha256Canonical(payload) };
 }
 
+function resign(snapshot) {
+  const payload = { ...snapshot };
+  delete payload.digest;
+  snapshot.digest = sha256Canonical(payload);
+  return snapshot;
+}
+
 (function acceptsExactUntamperedSnapshot() {
   const snapshot = signedSnapshot();
   const verified = verifyFinancialSnapshotV2(snapshot);
@@ -81,44 +88,94 @@ function signedSnapshot() {
   assert.strictEqual(verified.accountingPerimeter, 'SINERGY_CONSOLIDATED');
 })();
 
-(function rejectsFinancialValueTamperingWithoutRecomputingIt() {
+(function rejectsFinancialValueTamperingWithoutRecomputingDigest() {
   const snapshot = signedSnapshot();
   snapshot.hard_nav = '999999999';
-  assert.throws(() => verifyFinancialSnapshotV2(snapshot), SnapshotVerificationError);
+  assert.throws(() => verifyFinancialSnapshotV2(snapshot), /snapshot digest mismatch/);
 })();
 
 (function rejectsMissingRequiredFieldEvenWithFreshDigest() {
   const snapshot = unsignedSnapshot();
   delete snapshot.hard_nav;
-  snapshot.digest = sha256Canonical(snapshot);
+  resign(snapshot);
   assert.throws(() => verifyFinancialSnapshotV2(snapshot), /missing required fields/);
 })();
 
 (function rejectsUnknownTopLevelFieldEvenWithFreshDigest() {
   const snapshot = unsignedSnapshot();
   snapshot.browser_computed_nav = '999';
-  snapshot.digest = sha256Canonical(snapshot);
+  resign(snapshot);
   assert.throws(() => verifyFinancialSnapshotV2(snapshot), /unknown fields/);
 })();
 
 (function rejectsWrongSchemaEvenWithFreshDigest() {
   const snapshot = unsignedSnapshot();
   snapshot.schema = 'financial.snapshot/v999';
-  snapshot.digest = sha256Canonical(snapshot);
+  resign(snapshot);
   assert.throws(() => verifyFinancialSnapshotV2(snapshot), /unsupported snapshot schema/);
 })();
 
-(function rejectsNonFiniteJsonNumbers() {
+(function rejectsNonSafeIntegerJsonNumbers() {
   const snapshot = signedSnapshot();
   snapshot.sequence = Number.POSITIVE_INFINITY;
-  assert.throws(() => verifyFinancialSnapshotV2(snapshot), /non-finite number/);
+  assert.throws(() => verifyFinancialSnapshotV2(snapshot), /non-safe-integer number/);
 })();
 
-(function rejectsInvalidDigestFields() {
+(function rejectsUnsafeIntegerSequence() {
+  const snapshot = signedSnapshot();
+  snapshot.sequence = Number.MAX_SAFE_INTEGER + 1;
+  assert.throws(() => verifyFinancialSnapshotV2(snapshot), /non-safe-integer number/);
+})();
+
+(function rejectsInvalidDigestFieldsEvenWithFreshDigest() {
   const snapshot = signedSnapshot();
   snapshot.valuation_policy_digest = 'not-a-digest';
-  snapshot.digest = sha256Canonical({ ...snapshot, digest: undefined });
+  resign(snapshot);
   assert.throws(() => verifyFinancialSnapshotV2(snapshot), /valuation_policy_digest/);
+})();
+
+(function rejectsNumericValuesWhereCanonicalDecimalStringsAreRequired() {
+  const snapshot = unsignedSnapshot();
+  snapshot.hard_nav = 100;
+  resign(snapshot);
+  assert.throws(() => verifyFinancialSnapshotV2(snapshot), /hard_nav must be a canonical/);
+})();
+
+(function rejectsEquivalentButNoncanonicalDecimalStrings() {
+  for (const value of ['100.0', '0100', '-0']) {
+    const snapshot = unsignedSnapshot();
+    snapshot.hard_nav = value;
+    resign(snapshot);
+    assert.throws(() => verifyFinancialSnapshotV2(snapshot), /hard_nav must be a canonical/);
+  }
+})();
+
+(function rejectsNegativeTextForNonnegativeFields() {
+  const snapshot = unsignedSnapshot();
+  snapshot.external_liabilities = '-1';
+  resign(snapshot);
+  assert.throws(() => verifyFinancialSnapshotV2(snapshot), /external_liabilities/);
+})();
+
+(function rejectsDuplicateLiquidityHorizons() {
+  const snapshot = unsignedSnapshot();
+  snapshot.liquidity_horizons[2].horizon_weeks = 4;
+  resign(snapshot);
+  assert.throws(() => verifyFinancialSnapshotV2(snapshot), /unique 1w, 4w and 8w/);
+})();
+
+(function rejectsNoncanonicalLiquidityDecimalText() {
+  const snapshot = unsignedSnapshot();
+  snapshot.liquidity_horizons[0].lcr = '5.0';
+  resign(snapshot);
+  assert.throws(() => verifyFinancialSnapshotV2(snapshot), /liquidity_horizons\[0\]\.lcr/);
+})();
+
+(function rejectsUnknownPolicyMode() {
+  const snapshot = unsignedSnapshot();
+  snapshot.policy_mode = 'MAGIC_GROWTH';
+  resign(snapshot);
+  assert.throws(() => verifyFinancialSnapshotV2(snapshot), /policy_mode/);
 })();
 
 (function exportedVerifierHasNoFinancialRecomputationApi() {
