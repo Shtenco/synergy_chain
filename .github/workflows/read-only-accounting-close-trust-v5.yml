@@ -1,0 +1,43 @@
+name: read-only-accounting-close-trust-v5
+
+on:
+  pull_request:
+    paths:
+      - 'financial_os_v8/read_only_ledger_event_verifier_v2.cjs'
+      - 'financial_os_v8/read_only_accounting_close_verifier_v2.cjs'
+      - 'financial_os_v8/read_only_economic_cycle_trace_verifier_v6.cjs'
+      - 'financial_os_v8/read_only_commitment_envelope_verifier_v5.cjs'
+      - 'financial_os_v8/read_only_accounting_close_trust_bundle_v5.cjs'
+      - 'financial_os_v8/test_read_only_accounting_close_trust_v5.cjs'
+      - 'financial_os_v8/conformance/ledger_event_v2_recognized_revenue.json'
+      - 'financial_os_v8/conformance/financial_snapshot_v2_cycle_003.json'
+      - 'financial_os_v8/conformance/accounting_close_v2_cycle_003.json'
+      - 'financial_os_v8/conformance/ledger_inclusion_proof_v2_cycle_003.json'
+      - 'financial_os_v8/conformance/economic_cycle_trace_v6_complete.json'
+      - 'financial_os_v8/conformance/commitment_envelope_v5_trace_v6.json'
+      - '.github/workflows/read-only-accounting-close-trust-v5.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: read-only-accounting-close-trust-v5-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  read-only-v5:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check verifier syntax
+        run: >-
+          node --check financial_os_v8/read_only_ledger_event_verifier_v2.cjs &&
+          node --check financial_os_v8/read_only_accounting_close_verifier_v2.cjs &&
+          node --check financial_os_v8/read_only_economic_cycle_trace_verifier_v6.cjs &&
+          node --check financial_os_v8/read_only_commitment_envelope_verifier_v5.cjs &&
+          node --check financial_os_v8/read_only_accounting_close_trust_bundle_v5.cjs
+      - name: Run adversarial read-only bundle regression
+        run: node financial_os_v8/test_read_only_accounting_close_trust_v5.cjs
