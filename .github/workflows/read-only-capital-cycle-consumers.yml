@@ -1,0 +1,34 @@
+name: read-only-capital-cycle-consumers
+
+on:
+  pull_request:
+    paths:
+      - 'financial_os_v8/read_only_capital_authorization_verifier.cjs'
+      - 'financial_os_v8/read_only_economic_cycle_trace_verifier.cjs'
+      - 'financial_os_v8/test_read_only_capital_authorization_verifier.cjs'
+      - 'financial_os_v8/test_read_only_economic_cycle_trace_verifier.cjs'
+      - 'financial_os_v8/conformance/capital_authorization_v1_canonical.json'
+      - 'financial_os_v8/conformance/economic_cycle_trace_v1_complete.json'
+      - 'financial_os_v8/READ_ONLY_CAPITAL_AND_CYCLE_CONSUMER_20260818.md'
+      - '.github/workflows/read-only-capital-cycle-consumers.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: read-only-capital-cycle-consumers-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  read-only:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax-check verifiers
+        run: >-
+          node --check financial_os_v8/read_only_capital_authorization_verifier.cjs &&
+          node --check financial_os_v8/read_only_economic_cycle_trace_verifier.cjs
+      - name: Run CapitalAuthorization verifier regression
+        run: node financial_os_v8/test_read_only_capital_authorization_verifier.cjs
+      - name: Run EconomicCycleTrace verifier regression
+        run: node financial_os_v8/test_read_only_economic_cycle_trace_verifier.cjs
