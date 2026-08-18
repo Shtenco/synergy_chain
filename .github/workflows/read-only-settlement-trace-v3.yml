@@ -1,0 +1,36 @@
+name: read-only-settlement-trace-v3
+
+on:
+  pull_request:
+    paths:
+      - 'financial_os_v8/read_only_settlement_receipt_verifier_v2.cjs'
+      - 'financial_os_v8/read_only_economic_cycle_trace_verifier_v3.cjs'
+      - 'financial_os_v8/read_only_economic_cycle_bundle_v3.cjs'
+      - 'financial_os_v8/conformance/settlement_receipt_v2_*.json'
+      - 'financial_os_v8/conformance/economic_cycle_trace_v3_complete.json'
+      - 'financial_os_v8/test_read_only_settlement_trace_v3.cjs'
+      - 'financial_os_v8/READ_ONLY_SETTLEMENT_TRACE_V3_20260818.md'
+      - '.github/workflows/read-only-settlement-trace-v3.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: read-only-settlement-trace-v3-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  readonly-v3:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Parse new verifier modules
+        run: >-
+          node --check financial_os_v8/read_only_settlement_receipt_verifier_v2.cjs &&
+          node --check financial_os_v8/read_only_economic_cycle_trace_verifier_v3.cjs &&
+          node --check financial_os_v8/read_only_economic_cycle_bundle_v3.cjs
+      - name: Run read-only causal bundle regressions
+        run: node financial_os_v8/test_read_only_settlement_trace_v3.cjs
