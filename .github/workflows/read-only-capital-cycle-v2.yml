@@ -1,0 +1,31 @@
+name: read-only-capital-cycle-v2
+
+on:
+  pull_request:
+    paths:
+      - 'financial_os_v8/read_only_capital_authorization_verifier_v2.cjs'
+      - 'financial_os_v8/read_only_economic_cycle_trace_verifier_v2.cjs'
+      - 'financial_os_v8/test_read_only_capital_cycle_v2.cjs'
+      - 'financial_os_v8/conformance/capital_authorization_v2_canonical.json'
+      - 'financial_os_v8/conformance/economic_cycle_trace_v2_complete.json'
+      - 'financial_os_v8/READ_ONLY_CAPITAL_CYCLE_V2_20260818.md'
+      - '.github/workflows/read-only-capital-cycle-v2.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: read-only-capital-cycle-v2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  read-only-v2:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax-check v2 verifiers
+        run: >-
+          node --check financial_os_v8/read_only_capital_authorization_verifier_v2.cjs &&
+          node --check financial_os_v8/read_only_economic_cycle_trace_verifier_v2.cjs
+      - name: Run v2 read-only regressions
+        run: node financial_os_v8/test_read_only_capital_cycle_v2.cjs
