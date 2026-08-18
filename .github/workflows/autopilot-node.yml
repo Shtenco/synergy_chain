@@ -20,5 +20,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Node version
         run: node --version
-      - name: Capability/authority tests
+      - name: Capability and unsigned execution tests
         run: node --test services/autopilot-node/reference.test.mjs
+      - name: Company delegation and epoch budget tests
+        run: node --test services/autopilot-node/delegation.test.mjs
