@@ -1,0 +1,30 @@
+name: Autopilot Economic Node v2
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'services/autopilot-node/**'
+      - '.github/workflows/autopilot-node-v2.yml'
+  pull_request:
+    paths:
+      - 'services/autopilot-node/**'
+      - '.github/workflows/autopilot-node-v2.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  reference-node-v2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node --version
+      - name: Base capability and unsigned proposal contract
+        run: node --test services/autopilot-node/reference.test.mjs
+      - name: Delegation and company-wide budget lifecycle
+        run: node --test services/autopilot-node/delegation.test.mjs
+      - name: Budget-bound signer envelope
+        run: node --test services/autopilot-node/budget_execution_gate.test.mjs
+      - name: One-time execution lease anti-replay
+        run: node --test services/autopilot-node/execution_lease.test.mjs
