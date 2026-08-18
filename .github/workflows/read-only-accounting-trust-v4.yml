@@ -1,0 +1,38 @@
+name: read-only-accounting-trust-v4
+
+on:
+  pull_request:
+    paths:
+      - 'financial_os_v8/read_only_revenue_recognition_verifier_v2.cjs'
+      - 'financial_os_v8/read_only_ledger_event_verifier_v1.cjs'
+      - 'financial_os_v8/read_only_economic_cycle_trace_verifier_v5.cjs'
+      - 'financial_os_v8/read_only_commitment_envelope_verifier_v4.cjs'
+      - 'financial_os_v8/read_only_accounting_trust_bundle_v4.cjs'
+      - 'financial_os_v8/conformance/revenue_recognition_v2_canonical.json'
+      - 'financial_os_v8/conformance/ledger_event_v1_recognized_revenue.json'
+      - 'financial_os_v8/conformance/economic_cycle_trace_v5_complete.json'
+      - 'financial_os_v8/conformance/commitment_envelope_v4_trace_v5.json'
+      - 'financial_os_v8/test_read_only_accounting_trust_v4.cjs'
+      - 'financial_os_v8/READ_ONLY_ACCOUNTING_TRUST_V4_20260818.md'
+      - '.github/workflows/read-only-accounting-trust-v4.yml'
+  workflow_dispatch:
+
+jobs:
+  readonly-accounting-trust:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Parse new read-only modules
+        run: >-
+          node --check financial_os_v8/read_only_revenue_recognition_verifier_v2.cjs &&
+          node --check financial_os_v8/read_only_ledger_event_verifier_v1.cjs &&
+          node --check financial_os_v8/read_only_economic_cycle_trace_verifier_v5.cjs &&
+          node --check financial_os_v8/read_only_commitment_envelope_verifier_v4.cjs &&
+          node --check financial_os_v8/read_only_accounting_trust_bundle_v4.cjs
+      - name: Run read-only accounting/trust adversarial regression
+        run: node financial_os_v8/test_read_only_accounting_trust_v4.cjs
