@@ -1,0 +1,24 @@
+name: Autopilot Economic Node
+
+on:
+  push:
+    paths:
+      - 'services/autopilot-node/**'
+      - '.github/workflows/autopilot-node.yml'
+  pull_request:
+    paths:
+      - 'services/autopilot-node/**'
+      - '.github/workflows/autopilot-node.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  reference-node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Node version
+        run: node --version
+      - name: Capability/authority tests
+        run: node --test services/autopilot-node/reference.test.mjs
