@@ -1,6 +1,8 @@
 name: Validate SINERGYCHAIN source
 
 on:
+  push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -23,3 +25,18 @@ jobs:
       - name: Run validation
         working-directory: _source
         run: npm run check
+
+  qe-v10-evm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - name: Compile V10
+        working-directory: qe_v10
+        run: forge build
+      - name: Run V10 EVM tests
+        working-directory: qe_v10
+        run: forge test -vvv
