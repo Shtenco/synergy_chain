@@ -23,3 +23,23 @@ jobs:
       - name: Run validation
         working-directory: _source
         run: npm run check
+
+  qe-v9-evm:
+    if: github.head_ref == 'qe-v9-evm-ci-20260825'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - name: Build QE V9 contracts
+        working-directory: research/qe_v9
+        run: forge build
+      - name: Run QE V9 EVM tests
+        working-directory: research/qe_v9
+        run: forge test -vvv
+      - name: QE V9 gas report
+        working-directory: research/qe_v9
+        run: forge test --gas-report
