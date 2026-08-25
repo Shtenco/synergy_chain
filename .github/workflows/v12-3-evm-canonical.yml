@@ -1,0 +1,24 @@
+name: V12.3 canonical EVM causality audit
+
+on:
+  pull_request:
+    paths:
+      - 'qe_v12_3/**'
+      - '.github/workflows/v12-3-evm-canonical.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  foundry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - name: Run V12.3 canonical causality tests
+        working-directory: qe_v12_3
+        run: forge test -vvv
