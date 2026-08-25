@@ -1,6 +1,6 @@
 import unittest
 
-from model import (
+from audit_v12.model import (
     V11Config,
     bridge_equity,
     canonical_bridge_delta,
