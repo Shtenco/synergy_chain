@@ -1,0 +1,27 @@
+name: V11 distilled four-contract EVM
+
+on:
+  pull_request:
+    paths:
+      - 'qe_v11_distilled/**'
+      - '.github/workflows/v11-distilled-evm.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  distilled-evm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - name: Build four contracts
+        working-directory: qe_v11_distilled
+        run: forge build
+      - name: Run distilled EVM tests
+        working-directory: qe_v11_distilled
+        run: forge test -vvvv
