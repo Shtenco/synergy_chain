@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Run cross-release conservation audit
-        run: python -m unittest audit_v12.test_release_conservation -v
+        run: python -m unittest discover -s audit_v12 -p 'test_*.py' -v
 
   qe-v10-foundry:
     runs-on: ubuntu-latest
