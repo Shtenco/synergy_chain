@@ -1,0 +1,26 @@
+name: V12.4 distilled Base fork
+
+on:
+  pull_request:
+    paths:
+      - 'qe_v12_4/**'
+      - '.github/workflows/v12-4-base-fork.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  base-fork:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      BASE_RPC_URL: https://mainnet.base.org
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - name: Run distilled Base fork suite
+        working-directory: qe_v12_4
+        run: forge test -vvvv
