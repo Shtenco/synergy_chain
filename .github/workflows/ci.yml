@@ -40,3 +40,18 @@ jobs:
       - name: Run V10 EVM tests
         working-directory: qe_v10
         run: forge test -vvv
+
+  qe-v11-evm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - name: Compile V11
+        working-directory: qe_v11
+        run: forge build
+      - name: Run V11 EVM tests
+        working-directory: qe_v11
+        run: forge test -vvv
