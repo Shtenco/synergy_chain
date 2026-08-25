@@ -1,0 +1,36 @@
+name: V12 causal conservation audit
+
+on:
+  pull_request:
+    paths:
+      - 'audit_v12/**'
+      - 'qe_v10/**'
+      - '.github/workflows/v12-causal-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  conservation-python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run cross-release conservation audit
+        run: python -m unittest audit_v12.test_release_conservation -v
+
+  qe-v10-foundry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - name: Run V10 two-elevator Solidity tests
+        working-directory: qe_v10
+        run: forge test -vvv
