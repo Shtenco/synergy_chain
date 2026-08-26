@@ -40,3 +40,18 @@ jobs:
       - name: Run V10 EVM tests
         working-directory: qe_v10
         run: forge test -vvv
+
+  oracle-100pct-evm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - name: Compile 100% own-oracle audit
+        working-directory: qe_oracle_audit
+        run: forge build -vv
+      - name: Run 100/500/1000 cycle EVM audit
+        working-directory: qe_oracle_audit
+        run: forge test -vvvv
