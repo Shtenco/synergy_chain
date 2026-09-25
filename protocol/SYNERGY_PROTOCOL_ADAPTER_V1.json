@@ -28,5 +28,6 @@
     "mechanism": "PROOF_OF_USEFUL_INFERENCE",
     "mint_authority": "Shtenco/synergy_ai_blockchain only",
     "no_verified_finalized_inference_no_worker_mint": true
-  }
+  },
+  "pin_policy": "PIN_IMMUTABLE_MERGE_SHA_ONLY_AFTER_PR24_PHYSICAL_GREEN"
 }
