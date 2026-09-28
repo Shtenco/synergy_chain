@@ -83,3 +83,40 @@ flowchart LR
 `GREEN` присваивается только воспроизводимым утверждениям. Исследовательский код, диаграмма или заявленная метрика без проверяемого artifact trail остаются `R&D/CANDIDATE`.
 
 <!-- SYNERGY-FEDERATION-PASSPORT:END -->
+
+---
+
+# ⛓️ Глубокий технический паспорт SINERGYCHAIN
+
+## Реальный `main`
+
+Репозиторий сочетает private Growth OS source bundle, CI/Pages deployment, security docs и отдельный `qe_v10` Foundry-контур.
+
+```text
+source/SINERGYCHAIN_GROWTH_OS_V7_SOURCE.tar.gz
+.github/workflows/ci.yml
+.github/workflows/pages.yml
+SECURITY.md
+qe_v10/src/QEV10TwoElevator.sol
+qe_v10/test/QEV10TwoElevator.t.sol
+```
+
+## Архитектурное разделение
+
+```mermaid
+flowchart LR
+    SRC[📦 Growth OS source bundle] --> BACKEND[Node.js backend]
+    SRC --> STATIC[public/ static build]
+    STATIC --> PAGES[GitHub Pages]
+    QE[🧪 qe_v10 Foundry R&D] --> RESEARCH[Monetary research]
+```
+
+Growth OS, static portal и QE research не должны смешивать authority: portal ≠ ledger, AI CFO ≠ accounting, QE experiment ≠ external profit.
+
+## Следующий рубеж
+
+- unpacked source tree manifest + hashes;
+- CI evidence for source extraction/validation;
+- explicit backend/API authority map;
+- separation of product metrics from accounting claims;
+- QE v10 results documented independently from Growth OS product claims.
