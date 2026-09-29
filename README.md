@@ -295,6 +295,33 @@ These are expected paths from repository definitions; observed CI status must be
 - that test cumulative PnL equals HardNAV;
 - that internal debt burn creates assets.
 
+## 19. 📥 Inputs / 📤 Outputs
+
+### V7 application surface inputs
+- committed source archive;
+- Node/package dependency graph inside archive;
+- CI environment;
+- public/static assets.
+
+### V7 outputs
+- validated source result;
+- safe `public/` Pages artifact when workflow executes;
+- backend-capable source only for separate server deployment.
+
+### QE V10 inputs
+- test token reserves;
+- fixed price and fee;
+- principal stand-ins;
+- premium/settlement/reinvestment/QT parameters.
+
+### QE V10 outputs
+- bridge reserve balances;
+- debt issued/burned;
+- modeled cumulative realized component;
+- canonical bridge NAV used by tests.
+
+These two input/output domains must remain separately versioned and evidenced.
+
 ---
 
 [🧭 SYNERGY SYSTEM](https://github.com/Shtenco/synergy_system) · [📚 Atlas](https://github.com/Shtenco/synergy_system/blob/main/docs/SYNERGY_REPOSITORY_ATLAS.md)
