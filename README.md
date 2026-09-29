@@ -1,122 +1,300 @@
-# SINERGYCHAIN · Growth OS V7
+# ⛓️ SINERGYCHAIN / synergy_chain — verified source, EVM & deployment dossier
 
-Private source repository for the SINERGY ecosystem portal and business operating system.
+> **Version in repository:** `7.0.0`.
+> **Статус:** 🟡 CANDIDATE/R&D — packaged Node/web source, CI/Pages pipeline and QE V10 Solidity testbed exist.
+> **Проверено по фактическому `main`:** 29.09.2026.
 
-## What is inside
+## 1. 🎯 Задача
 
-- SINERGYCHAIN / OGAS 2.0 public portal
-- OLGA AGI full-screen multi-agent chat
-- Single-model, chain, consensus, debate and AI-department modes
-- Recursive compressed conversation memory
-- Dynamic rotation of free OpenRouter models
-- Business Expert Autopilot
-- AI SMM, AI CRM, AI Sales and AI CFO
-- Encrypted server-side API Vault
-- Static GitHub Pages build
-- Node.js production backend
+`synergy_chain` combines a packaged SINERGYCHAIN Growth OS application source with an EVM monetary experiment (`qe_v10`).
 
-## Repository structure
+These are different evidence surfaces:
 
-The complete reproducible source tree is stored in:
+1. packaged web/Node application bundle;
+2. static GitHub Pages safe-public subset;
+3. Solidity QE V10 research contracts/tests.
+
+They must not be collapsed into one “production blockchain” claim.
+
+## 2. 📦 Factual repository map
+
+```text
+synergy_chain/
+├── VERSION                  # 7.0.0
+├── SECURITY.md
+├── docs/
+│   ├── DEPLOYMENT.md
+│   └── LEGACY_DISTILLATION_V2_OWNER.md
+├── source/
+│   ├── ABOUT.md
+│   ├── README.md
+│   └── SINERGYCHAIN_GROWTH_OS_V7_SOURCE.tar.gz
+├── unpack-source.sh
+├── qe_v10/
+│   ├── foundry.toml
+│   ├── src/QEV10TwoElevator.sol
+│   └── test/QEV10TwoElevator.t.sol
+└── .github/workflows/
+    ├── ci.yml
+    └── pages.yml
+```
+
+## 3. 📦 Packaged source bundle
+
+Main application source is stored as:
 
 `source/SINERGYCHAIN_GROWTH_OS_V7_SOURCE.tar.gz`
 
-GitHub Actions extracts the bundle, runs validation and deploys only the static `public/` directory to GitHub Pages. Backend code, runtime data and API secrets are never published by Pages.
-
-## Local launch
+CI extracts it into `_source` and runs:
 
 ```bash
-mkdir synergychain-v7
-cd synergychain-v7
-tar -xzf ../source/SINERGYCHAIN_GROWTH_OS_V7_SOURCE.tar.gz
 npm run check
-npm start
 ```
 
-Open `http://localhost:3000`.
+This means the canonical visible repo stores a source archive rather than a fully expanded Node project tree.
 
-## Static demo
+That is reproducible only if the archive itself remains immutable/versioned and its internal package lock/dependencies are valid.
 
-After unpacking, open `public/index.html`, or run:
+## 4. ⚙️ CI workflow
 
-```bash
-node scripts/static-server.js
-```
+`.github/workflows/ci.yml` contains two jobs.
 
-## Security
+### Source validation
 
-Never commit real API keys. Configure integrations through the encrypted API Vault or environment variables on the deployment server. See `SECURITY.md`.
+- checkout;
+- extract V7 tar.gz;
+- Node 20;
+- `npm run check`.
 
-## GitHub Pages
+### QE V10 EVM
 
-The workflow `.github/workflows/pages.yml` publishes the static portal from the private repository. The Pages website itself is publicly accessible unless GitHub Enterprise private Pages is configured.
+- checkout;
+- Foundry stable;
+- `forge build`;
+- `forge test -vvv`.
 
-© SINERGY / SHTENCO. Proprietary project.
+These are concrete automated validation definitions. README does not claim latest GitHub-hosted runner success without inspecting observed runs.
 
+## 5. 🌐 GitHub Pages boundary
 
-<!-- SYNERGY-FEDERATION-PASSPORT:START -->
----
+`pages.yml`:
 
-## 🧭 SYNERGY federation passport
+1. extracts source archive;
+2. verifies `_source/public/index.html` and `package.json`;
+3. runs `npm run check`;
+4. uploads **only `_source/public`**;
+5. deploys Pages artifact.
 
-**Домен:** ⛓️ SINERGYCHAIN R&D  
-**Архитектурный родитель:** [`synergy_ai_blockchain`](https://github.com/Shtenco/synergy_ai_blockchain)  
-**Архитектурный корень:** [`synergy_system`](https://github.com/Shtenco/synergy_system)
+This is a strong authority boundary: public static Pages does not deploy server-side application source.
 
-```mermaid
-flowchart LR
-    SYS[🧭 synergy_system] --> P[synergy_ai_blockchain]
-    P --> THIS[synergy_chain]
-    THIS --> E[📦 Evidence / outputs]
-```
+`docs/DEPLOYMENT.md` explicitly says Pages cannot run:
 
-Эта диаграмма фиксирует место в документационной федерации. Реальная code/runtime dependency должна подтверждаться отдельными артефактами.
+- Node.js sessions;
+- encrypted API Vault;
+- live model calls;
+- CRM writes;
+- CFO database operations;
+- real social-network publishing.
 
-### Навигация
+Production backend requires separate VPS/container/app platform.
 
-- [📚 Атлас всех 75 репозиториев](https://github.com/Shtenco/synergy_system/blob/main/docs/SYNERGY_REPOSITORY_ATLAS.md)
-- [🧾 Машиночитаемый registry](https://github.com/Shtenco/synergy_system/blob/main/registry/SYNERGY_REPOSITORIES.json)
-- [🧭 SYNERGY SYSTEM](https://github.com/Shtenco/synergy_system)
+## 6. 🧪 QE V10 research contracts
 
-### Evidence rule
+`qe_v10/src/QEV10TwoElevator.sol` defines a self-contained test system:
 
-`GREEN` присваивается только воспроизводимым утверждениям. Исследовательский код, диаграмма или заявленная метрика без проверяемого artifact trail остаются `R&D/CANDIDATE`.
+- `T10Token`;
+- `T10BridgeVault`;
+- `T10DebtBook`;
+- `T10FixedDex`;
+- `T10TwoElevatorPump`.
 
-<!-- SYNERGY-FEDERATION-PASSPORT:END -->
+The test tokens are minimal research primitives, **not production ERC-20 implementations**.
 
----
+## 7. 🏦 QE V10 model
 
-# ⛓️ Глубокий технический паспорт SINERGYCHAIN
+Two bridge vaults hold ETH-like and USDC-like test tokens.
 
-## Реальный `main`
+`T10FixedDex` converts at fixed price with fee.
 
-Репозиторий сочетает private Growth OS source bundle, CI/Pages deployment, security docs и отдельный `qe_v10` Foundry-контур.
+Pump has positive/negative legs:
+
+- swap principal;
+- lock one side;
+- calculate modeled gross profit;
+- split realized/deferred;
+- release opposite bridge liquidity;
+- repay stand-in principal to fixed sink addresses;
+- reinvest part of realized amount;
+- represent deferred amount as debt;
+- optional QT burn of debt.
+
+`cumulativeQEPnl` tracks modeled realized component.
+
+## 8. 🧮 Canonical bridge NAV
+
+Test helper and contract use:
+
+[
+NAV_{bridge}=
+ETH_{vault}	imes Price + USDC_{vault}
+]
+
+This is much stronger than counting internal emissions as profit because tests explicitly assert conservation/loss behavior.
+
+## 9. 🧪 QE V10 tests
+
+Inspected Foundry tests include:
+
+### Zero-fee asymmetric supercycle conserves NAV
+
+After positive + negative legs:
 
 ```text
-source/SINERGYCHAIN_GROWTH_OS_V7_SOURCE.tar.gz
-.github/workflows/ci.yml
-.github/workflows/pages.yml
-SECURITY.md
-qe_v10/src/QEV10TwoElevator.sol
-qe_v10/test/QEV10TwoElevator.t.sol
+end NAV ~= start NAV
+debtUsd == 0
 ```
 
-## Архитектурное разделение
+Tolerance is tiny integer rounding.
+
+### Both elevators cannot rise at zero fee
+
+Test requires that both bridge reserve balances cannot simultaneously exceed starts after full QT.
+
+### Fee makes pump lose canonical NAV
+
+With 30 bps fixed DEX fee:
+
+```text
+end NAV < start NAV
+```
+
+This is important negative evidence against “free value creation”.
+
+### Debt QT does not move canonical balances magically
+
+Deferred debt can be issued/burned, while bridge reserve direction remains separately checked.
+
+## 10. 🛡️ Economic invariants
+
+```text
+QE debt issue != external profit
+debt burn      != bridge asset creation
+internal cumulativeQEPnl != independent proof of owned external wealth
+zero-fee closed loop should not create canonical NAV
+fees should reduce canonical NAV absent external edge
+both reserve elevators cannot rise from internal mechanics alone
+```
+
+## 11. 🔐 Smart-contract security limitations
+
+QE V10 contracts are intentionally test-oriented and omit many production requirements:
+
+- T10Token `mint` is unrestricted;
+- no audited ERC-20 library;
+- owner/controller setup is minimal;
+- fixed-price DEX;
+- sink addresses are hard-coded stand-ins;
+- no oracle;
+- no reentrancy/security framework;
+- no upgrade governance;
+- no real flash-loan protocol;
+- no bridge proof verification.
+
+Therefore passing Foundry properties would validate model invariants, not production security.
+
+## 12. 📚 Legacy distillation
+
+`docs/LEGACY_DISTILLATION_V2_OWNER.md` assigns:
+
+- 2 mechanisms;
+- 6 extracted legacy code units;
+- IDs MECH-0211, MECH-0212;
+- domain: visualization/presentation support.
+
+Promotion boundary: dashboard/simulated metric/UI status never becomes accounting, settlement or governance truth.
+
+## 13. 🏗️ Architecture
 
 ```mermaid
-flowchart LR
-    SRC[📦 Growth OS source bundle] --> BACKEND[Node.js backend]
-    SRC --> STATIC[public/ static build]
-    STATIC --> PAGES[GitHub Pages]
-    QE[🧪 qe_v10 Foundry R&D] --> RESEARCH[Monetary research]
+flowchart TD
+    ARCHIVE[V7 source tar.gz] --> CI[npm run check]
+    CI --> PUB[public/ static subset]
+    PUB --> PAGES[GitHub Pages]
+
+    QE[QE V10 Solidity] --> FBUILD[forge build]
+    FBUILD --> FTEST[forge test]
+    FTEST --> EVID[Research invariant evidence]
+
+    PAGES -. no authority .-> SYS[SYNERGY ecosystem]
+    EVID -. R&D only .-> SYS
 ```
 
-Growth OS, static portal и QE research не должны смешивать authority: portal ≠ ledger, AI CFO ≠ accounting, QE experiment ≠ external profit.
+## 14. 🛠️ Reproducibility
 
-## Следующий рубеж
+Web/source:
 
-- unpacked source tree manifest + hashes;
-- CI evidence for source extraction/validation;
-- explicit backend/API authority map;
-- separation of product metrics from accounting claims;
-- QE v10 results documented independently from Growth OS product claims.
+```bash
+./unpack-source.sh
+cd _source
+npm run check
+```
+
+QE V10:
+
+```bash
+cd qe_v10
+forge build
+forge test -vvv
+```
+
+These are expected paths from repository definitions; observed CI status must be recorded separately.
+
+## 15. ⚠️ Failure modes
+
+| Failure | Consequence |
+|---|---|
+| source archive changes without provenance | reproducibility drift |
+| Pages exposes server-side secrets | public leak |
+| static UI treated as backend | authority confusion |
+| unrestricted test mint mistaken for production token | severe security error |
+| fixed DEX model generalized to market | invalid economic conclusion |
+| cumulativeQEPnl used instead of bridge NAV | false value claim |
+
+## 16. 📊 Evidence maturity
+
+| Layer | Status |
+|---|---|
+| versioned source archive | ✅ |
+| Node check workflow | ✅ definition |
+| safe static Pages subset | ✅ architecture |
+| QE V10 contracts | ✅ R&D source |
+| QE Foundry tests | ✅ source |
+| conservation/loss assertions | ✅ in tests |
+| production chain security | ❌ |
+| real bridge proofs | ❌ |
+| external economic profit | ❌ |
+| observed production deployment | ❌ |
+
+## 17. 🚀 Roadmap
+
+1. hash/provenance manifest for source archive;
+2. SBOM/package lock validation;
+3. observed CI evidence;
+4. replace test token with hardened libraries for any production branch;
+5. property/fuzz tests;
+6. real oracle/bridge proof model only in separate production design;
+7. distinguish public portal release from backend release;
+8. connect evidence to federation maturity gates.
+
+## 18. 🛑 Что project НЕ утверждает
+
+- that QE V10 prints external wealth;
+- that test tokens are production-safe;
+- that GitHub Pages is full backend;
+- that packaged source is currently deployed;
+- that test cumulative PnL equals HardNAV;
+- that internal debt burn creates assets.
+
+---
+
+[🧭 SYNERGY SYSTEM](https://github.com/Shtenco/synergy_system) · [📚 Atlas](https://github.com/Shtenco/synergy_system/blob/main/docs/SYNERGY_REPOSITORY_ATLAS.md)
