@@ -1,10 +1,10 @@
-# ⛓️ SINERGYCHAIN / synergy_chain — verified source, EVM & deployment dossier
+#  SINERGYCHAIN / synergy_chain — verified source, EVM & deployment dossier
 
 > **Version in repository:** `7.0.0`.
-> **Статус:** 🟡 CANDIDATE/R&D — packaged Node/web source, CI/Pages pipeline and QE V10 Solidity testbed exist.
+> **Статус:**  CANDIDATE/R&D — packaged Node/web source, CI/Pages pipeline and QE V10 Solidity testbed exist.
 > **Проверено по фактическому `main`:** 29.09.2026.
 
-## 1. 🎯 Задача
+## 1.  Задача
 
 `synergy_chain` combines a packaged SINERGYCHAIN Growth OS application source with an EVM monetary experiment (`qe_v10`).
 
@@ -16,7 +16,7 @@ These are different evidence surfaces:
 
 They must not be collapsed into one “production blockchain” claim.
 
-## 2. 📦 Factual repository map
+## 2.  Factual repository map
 
 ```text
 synergy_chain/
@@ -39,7 +39,7 @@ synergy_chain/
     └── pages.yml
 ```
 
-## 3. 📦 Packaged source bundle
+## 3.  Packaged source bundle
 
 Main application source is stored as:
 
@@ -55,7 +55,7 @@ This means the canonical visible repo stores a source archive rather than a full
 
 That is reproducible only if the archive itself remains immutable/versioned and its internal package lock/dependencies are valid.
 
-## 4. ⚙️ CI workflow
+## 4.  CI workflow
 
 `.github/workflows/ci.yml` contains two jobs.
 
@@ -75,7 +75,7 @@ That is reproducible only if the archive itself remains immutable/versioned and 
 
 These are concrete automated validation definitions. README does not claim latest GitHub-hosted runner success without inspecting observed runs.
 
-## 5. 🌐 GitHub Pages boundary
+## 5.  GitHub Pages boundary
 
 `pages.yml`:
 
@@ -98,7 +98,7 @@ This is a strong authority boundary: public static Pages does not deploy server-
 
 Production backend requires separate VPS/container/app platform.
 
-## 6. 🧪 QE V10 research contracts
+## 6.  QE V10 research contracts
 
 `qe_v10/src/QEV10TwoElevator.sol` defines a self-contained test system:
 
@@ -110,7 +110,7 @@ Production backend requires separate VPS/container/app platform.
 
 The test tokens are minimal research primitives, **not production ERC-20 implementations**.
 
-## 7. 🏦 QE V10 model
+## 7.  QE V10 model
 
 Two bridge vaults hold ETH-like and USDC-like test tokens.
 
@@ -130,7 +130,7 @@ Pump has positive/negative legs:
 
 `cumulativeQEPnl` tracks modeled realized component.
 
-## 8. 🧮 Canonical bridge NAV
+## 8.  Canonical bridge NAV
 
 Test helper and contract use:
 
@@ -141,7 +141,7 @@ ETH_{vault}	imes Price + USDC_{vault}
 
 This is much stronger than counting internal emissions as profit because tests explicitly assert conservation/loss behavior.
 
-## 9. 🧪 QE V10 tests
+## 9.  QE V10 tests
 
 Inspected Foundry tests include:
 
@@ -174,7 +174,7 @@ This is important negative evidence against “free value creation”.
 
 Deferred debt can be issued/burned, while bridge reserve direction remains separately checked.
 
-## 10. 🛡️ Economic invariants
+## 10.  Economic invariants
 
 ```text
 QE debt issue != external profit
@@ -185,7 +185,7 @@ fees should reduce canonical NAV absent external edge
 both reserve elevators cannot rise from internal mechanics alone
 ```
 
-## 11. 🔐 Smart-contract security limitations
+## 11.  Smart-contract security limitations
 
 QE V10 contracts are intentionally test-oriented and omit many production requirements:
 
@@ -202,7 +202,7 @@ QE V10 contracts are intentionally test-oriented and omit many production requir
 
 Therefore passing Foundry properties would validate model invariants, not production security.
 
-## 12. 📚 Legacy distillation
+## 12.  Legacy distillation
 
 `docs/LEGACY_DISTILLATION_V2_OWNER.md` assigns:
 
@@ -213,7 +213,7 @@ Therefore passing Foundry properties would validate model invariants, not produc
 
 Promotion boundary: dashboard/simulated metric/UI status never becomes accounting, settlement or governance truth.
 
-## 13. 🏗️ Architecture
+## 13.  Architecture
 
 ```mermaid
 flowchart TD
@@ -229,7 +229,7 @@ flowchart TD
     EVID -. R&D only .-> SYS
 ```
 
-## 14. 🛠️ Reproducibility
+## 14.  Reproducibility
 
 Web/source:
 
@@ -249,7 +249,7 @@ forge test -vvv
 
 These are expected paths from repository definitions; observed CI status must be recorded separately.
 
-## 15. ⚠️ Failure modes
+## 15.  Failure modes
 
 | Failure | Consequence |
 |---|---|
@@ -260,22 +260,22 @@ These are expected paths from repository definitions; observed CI status must be
 | fixed DEX model generalized to market | invalid economic conclusion |
 | cumulativeQEPnl used instead of bridge NAV | false value claim |
 
-## 16. 📊 Evidence maturity
+## 16.  Evidence maturity
 
 | Layer | Status |
 |---|---|
-| versioned source archive | ✅ |
-| Node check workflow | ✅ definition |
-| safe static Pages subset | ✅ architecture |
-| QE V10 contracts | ✅ R&D source |
-| QE Foundry tests | ✅ source |
-| conservation/loss assertions | ✅ in tests |
-| production chain security | ❌ |
-| real bridge proofs | ❌ |
-| external economic profit | ❌ |
-| observed production deployment | ❌ |
+| versioned source archive |  |
+| Node check workflow |  definition |
+| safe static Pages subset |  architecture |
+| QE V10 contracts |  R&D source |
+| QE Foundry tests |  source |
+| conservation/loss assertions |  in tests |
+| production chain security |  |
+| real bridge proofs |  |
+| external economic profit |  |
+| observed production deployment |  |
 
-## 17. 🚀 Roadmap
+## 17.  Roadmap
 
 1. hash/provenance manifest for source archive;
 2. SBOM/package lock validation;
@@ -286,7 +286,7 @@ These are expected paths from repository definitions; observed CI status must be
 7. distinguish public portal release from backend release;
 8. connect evidence to federation maturity gates.
 
-## 18. 🛑 Что project НЕ утверждает
+## 18.  Что project НЕ утверждает
 
 - that QE V10 prints external wealth;
 - that test tokens are production-safe;
@@ -295,7 +295,7 @@ These are expected paths from repository definitions; observed CI status must be
 - that test cumulative PnL equals HardNAV;
 - that internal debt burn creates assets.
 
-## 19. 📥 Inputs / 📤 Outputs
+## 19.  Inputs /  Outputs
 
 ### V7 application surface inputs
 - committed source archive;
@@ -324,4 +324,4 @@ These two input/output domains must remain separately versioned and evidenced.
 
 ---
 
-[🧭 SYNERGY SYSTEM](https://github.com/Shtenco/synergy_system) · [📚 Atlas](https://github.com/Shtenco/synergy_system/blob/main/docs/SYNERGY_REPOSITORY_ATLAS.md)
+[ SYNERGY SYSTEM](https://github.com/Shtenco/synergy_system) · [ Atlas](https://github.com/Shtenco/synergy_system/blob/main/docs/SYNERGY_REPOSITORY_ATLAS.md)
