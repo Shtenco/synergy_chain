@@ -1,3 +1,10 @@
+<!-- SCIENTIFIC-PROFILE-2026:START -->
+<img src="assets/readme/research-architecture.svg" width="100%" alt="SINERGYCHAIN / V7 AND QE V10"/>
+
+**[Исследовательский профиль / Scientific Profile](docs/SCIENTIFIC_PROFILE_2026.md)** — алгоритмы, математическая постановка, вклад и направление экспериментов. Исходный README ниже сохранён полностью.
+
+<!-- SCIENTIFIC-PROFILE-2026:END -->
+
 #  SINERGYCHAIN / synergy_chain — verified source, EVM & deployment dossier
 
 > **Version in repository:** `7.0.0`.
